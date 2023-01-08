@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Productos {% endblock %}
+
+{% block contenido_form %}
+<h2>Formulario de productos</h2>
+
+<form action="" method="POST"> {% csrf_token %}
+  <div class="mb-3 w-25">
+    Nombre: <input type="text" name="name" class="form-control">
+  </div>
+  <div class="mb-3 w-25">
+    Precio: <input type="number" name="price" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-primary" >Submit</button>
+</form>
+
+{% endblock %} 
+
+{% block contenido %}
+<h2>Productos</h2>
+
+<ul>
+  {% for i in productos %}
+  <li>Nombre: {{i.name}}, Precio: {{i.price}}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

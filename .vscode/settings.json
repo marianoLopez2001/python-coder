@@ -2,8 +2,9 @@
     "workbench.colorCustomizations": {
         "editor.lineHighlightBackground": "#1073cf2d",
         "editor.lineHighlightBorder": "#9fced11f",
-        "activityBar.background": "#2E3004",
-        "titleBar.activeBackground": "#414306",
-        "titleBar.activeForeground": "#FBFCDD"
-    }
+        "activityBar.background": "#3A2C08",
+        "titleBar.activeBackground": "#513D0B",
+        "titleBar.activeForeground": "#FDF9F0"
+    },
+    "python.formatting.provider": "black"
 }
