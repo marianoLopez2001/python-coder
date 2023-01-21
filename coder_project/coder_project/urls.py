@@ -15,13 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecomerce.views import crear_producto, ver_productos, crear_carritos, ver_carritos, crear_cliente, ver_clientes
+from ecomerce.views import crear_producto, ver_productos, crear_carritos, ver_carritos, crear_cliente, ver_clientes, eliminar_producto
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('crearProducto/', crear_producto, name='CrearProducto'),
     path('productos/', ver_productos, name='VerProductos'),
+    path('eliminar-producto/<data>', eliminar_producto, name='EliminarProducto'),
+
 
     path('crearCarrito/', crear_carritos, name='CrearCarrito'),
     path('carritos/', ver_carritos, name='VerCarritos'),

@@ -8,4 +8,7 @@
     Se pueden hacer desde la su url respectiva de forma estatica o de forma dinamica con forms con su url (/coder_project/coder_project/urls.py)
 ## Funcionalidades
     La funcionalidad de la app estan principalmente en las views, el renderizado condicional de los templates se hizo ahi, en vez de usar django o el html mismo
+
+mariano
+passwordsuperuser
      

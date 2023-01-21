@@ -12,17 +12,20 @@
   <div class="mb-3 w-25">
     Precio: <input type="number" name="price" class="form-control">
   </div>
-  <button type="submit" class="btn btn-primary" >Submit</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-{% endblock %} 
+{% endblock %}
 
 {% block contenido %}
 <h2>Productos</h2>
 
 <ul>
   {% for i in productos %}
-  <li>Nombre: {{i.name}}, Precio: {{i.price}}</li>
+  <div class="d-flex gap-3">
+    <li>Nombre: {{i.name}}, Precio: {{i.price}}, Id: {{i.id}}</li>
+    <button class="btn btn-primary"><a class="text-light text-decoration-none" href="{% url 'EliminarProducto' i.id %}">Eliminar</a></a></button>
+  </div>
   {% endfor %}
 </ul>
 {% endblock %}

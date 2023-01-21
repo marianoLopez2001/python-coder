@@ -1,6 +1,6 @@
 from ecomerce.models import Productos, Carritos, Cliente
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect   
 
 # Producto
 
@@ -67,3 +67,8 @@ def ver_clientes(request):
         lastName = request.POST["lastName"]
         Cliente.objects.create(name=name, lastName=lastName)
         return HttpResponse("Data enviada!")
+
+def eliminar_producto (request, data):
+    eliminar = Productos.objects.get(id=data)
+    eliminar.delete()
+    return redirect('VerProductos')
