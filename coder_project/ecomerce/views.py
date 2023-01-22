@@ -2,11 +2,17 @@ from ecomerce.models import Productos, Carritos, Cliente
 from django.http import HttpResponse
 from django.shortcuts import render, redirect   
 
-# Producto
+#Inicio
 
-def crear_producto(request):
-    newProd = Productos.objects.create(name="coca", price=200)
-    return HttpResponse("Producto creado")
+def inicio (request):
+    return render(request, 'inicio.html')
+
+#Acerca de mi
+
+def acerca_de_mi (request):
+    return render(request, 'acerca-de-mi.html')
+
+# Producto
         
 def ver_productos(request):
     if request.method == "GET" and 'search' in request.GET:
@@ -21,14 +27,23 @@ def ver_productos(request):
     elif request.method == "POST":
         name = request.POST["name"]
         price = request.POST["price"]
-        Productos.objects.create(name=name, price=price)
-        return HttpResponse("Data enviada!")
+        description = request.POST["description"]
+        image = request.POST["image"]
+        Productos.objects.create(name=name, price=price, description=description, image=image)
+        return redirect("VerProductos")
+
+def eliminar_producto (request, data):
+    eliminar = Productos.objects.get(id=data)
+    eliminar.delete()
+    return redirect('VerProductos')
+
+def detalle_producto (request, data):
+    producto = Productos.objects.get(id=data)
+    print(producto)
+    context={"producto": producto}
+    return render(request, 'producto-detalle.html', context = context)
 
 # Carrito
-
-def crear_carritos(request):
-    newCarrito = Carritos.objects.create(name="Carrito de Juan")
-    return HttpResponse("Carrito creado")
 
 def ver_carritos(request):
     if request.method == "GET" and 'search' in request.GET:
@@ -43,14 +58,14 @@ def ver_carritos(request):
     elif request.method == "POST":
         name = request.POST["name"]
         Carritos.objects.create(name=name)
-        return HttpResponse("Data enviada!")
+        return redirect("VerCarritos")
+
+def eliminar_carrito (request, data):
+    eliminar = Carritos.objects.get(id=data)
+    eliminar.delete()
+    return redirect('VerCarritos')
 
 # Cliente
-
-def crear_cliente(request):
-    newCliente = Cliente.objects.create(name="Mariano", lastName="Lopez")
-    return HttpResponse("Cliente creado")
-
 
 def ver_clientes(request):
     if request.method == "GET" and 'search' in request.GET:
@@ -66,9 +81,10 @@ def ver_clientes(request):
         name = request.POST["name"]
         lastName = request.POST["lastName"]
         Cliente.objects.create(name=name, lastName=lastName)
-        return HttpResponse("Data enviada!")
+        return redirect("VerClientes")
 
-def eliminar_producto (request, data):
-    eliminar = Productos.objects.get(id=data)
+def eliminar_cliente (request, data):
+    eliminar = Cliente.objects.get(id=data)
     eliminar.delete()
-    return redirect('VerProductos')
+    return redirect('VerClientes')
+

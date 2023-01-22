@@ -4,6 +4,8 @@ from django.db import models
 
 class Productos (models.Model):
     name = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
+    image = models.CharField(max_length=200)
     price = models.IntegerField()
 
 class Carritos (models.Model):

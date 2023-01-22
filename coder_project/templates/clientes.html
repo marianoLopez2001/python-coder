@@ -12,7 +12,7 @@
   <div class="mb-3 w-25">
     Apellido: <input type="text" name="lastName" class="form-control">
   </div>
-  <button type="submit" class="btn btn-primary" >Submit</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 {% endblock %}
@@ -22,7 +22,10 @@
 
 <ul>
   {% for i in clientes %}
-  <li>Nombre: {{i.name}}, Apellido: {{i.lastName}}</li>
+  <div class="d-flex gap-3">
+    <li>Nombre: {{i.name}}, Apellido: {{i.lastName}}, Id: {{i.id}}</li>
+    <button class="btn btn-primary"><a class="text-light text-decoration-none" href="{% url 'EliminarCliente' i.id %}">Eliminar</a></a></button>
+  </div>
   {% endfor %}
 </ul>
 {% endblock %}
