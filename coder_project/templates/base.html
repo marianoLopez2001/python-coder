@@ -23,12 +23,6 @@
               <a class="nav-link" href="{% url 'VerProductos' %}">Productos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'VerCarritos' %}">Carritos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'VerClientes' %}">Clientes</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="{% url 'AcercaDeMi' %}">Acerca de mi</a>
             </li>
           </ul>
@@ -36,6 +30,10 @@
             <input class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          <div class="m-3 mt-0 mb-0">
+            <a class='btn btn-outline-success' href="{% url 'Login' %}">Login</a>
+            <a class='btn btn-outline-success' href="{% url 'Register' %}">Registrar</a>
+          </div>
         </div>
       </div>
     </nav>

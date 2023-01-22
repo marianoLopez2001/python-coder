@@ -3,18 +3,23 @@
 {% block title %} Detalle de {{producto.name}} {% endblock %}
 
 {% block contenido %}
-<h1>Detalle Producto</h1>
-<div class="border d-flex flex-column justify-content-around" style="width: 18rem;">
-  <div>
-    <img style="max-height: 300px;" src={{producto.image}} class="card-img-top" alt="...">
-  </div>
-  <div class="card-body d-flex justify-content-end flex-column">
-    <div class="m-3">
-      <h5 class="card-title">{{producto.name}}</h5>
-      <h5 class="card-title">{{producto.price}} $</h5>
-      <h5 class="card-title">{{producto.description}} $</h5>
+<h1 class="text-center m-3">Detalle de {{producto.name}}</h1>
+<section class="d-flex justify-content-center m-4">
+  <div class="border d-flex flex-column justify-content-around" style="width: 18rem;">
+    <div>
+      <img style="max-height: 300px;" src={{producto.image}} class="card-img-top" alt="...">
     </div>
-    <a class="btn btn-primary text-light text-decoration-none" href="{% url 'EliminarProducto' producto.id %}">Eliminar</a>
+    <div class="card-body d-flex justify-content-end flex-column">
+      <div class="m-3">
+        <h4 class="card-title">Nombre: {{producto.name}}</h4>
+        <h5 class="card-title">Descripcion: {{producto.description}}</h5>
+        <h5 class="card-title">Fecha de creacion: {{producto.date}}</h5>
+        <h5 class="card-title">Creado por: {{producto.author}}</h5>
+        <h5 class="card-title">Precio: {{producto.price}} $</h5>
+        <h5 class="card-title">Stock: {{producto.stock}}</h5>
+      </div>
+      <a class="btn btn-primary text-light text-decoration-none" href="{% url 'EliminarProducto' producto.id %}">Eliminar</a>
+    </div>
   </div>
-</div>
+</section>
 {% endblock %}

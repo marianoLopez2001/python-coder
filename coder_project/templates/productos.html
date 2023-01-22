@@ -3,12 +3,9 @@
 {% block title %} Productos {% endblock %}
 
 {% block contenido %}
-<h2>Productos</h2>
+<h2 class="text-center m-3">Productos</h2>
 
-{% if productos.len == 0 %}
-<p>No hay productos</p>
-{% else %}
-<section class="m-4 d-flex gap-3 flex-direction-row">
+<section class="m-4 d-flex gap-3 flex-direction-row justify-content-center">
   {% for i in productos %}
   <div class="border d-flex flex-column justify-content-around" style="width: 18rem;">
     <div>
@@ -24,27 +21,19 @@
     </div>
   </div>
   {% endfor %}
-  {% endif %}
-  </section>
+</section>
 {% endblock %}
 
-  {% block contenido_form %}
-  <h2>Formulario de productos</h2>
+{% block contenido_form %}
 
-  <form action="" method="POST"> {% csrf_token %}
-    <div class="mb-3 w-25">
-      Nombre: <input type="text" name="name" class="form-control">
-    </div>
-    <div class="mb-3 w-25">
-      Precio: <input type="number" name="price" class="form-control">
-    </div>
-    <div class="mb-3 w-25">
-      Descripcion: <input type="text" name="description" class="form-control">
-    </div>
-    <div class="mb-3 w-25">
-      Imagen: <input type="text" name="image" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+<div class="m-5">
+  <form class="d-flex justify-content-center flex-column border p-3 m-auto" style="width: fit-content;" action="" method="POST"> {% csrf_token %}
+    <h2 class="text-center m-4">Formulario de productos</h2>
+    <table>
+      {{formulario.as_table}}
+    </table>
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
   </form>
+</div>
 
-  {% endblock %}
+{% endblock %}
