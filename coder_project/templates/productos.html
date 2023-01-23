@@ -17,7 +17,9 @@
         <h5 class="card-title">{{i.price}} $</h5>
         <a class="text-decoration-none" href="{% url 'DetalleProducto' i.id %}">Leer mas</a>
       </div>
+      {% if request.user.is_superuser %}
       <a class="btn btn-primary text-light text-decoration-none" href="{% url 'EliminarProducto' i.id %}">Eliminar</a>
+      {% endif %}
     </div>
   </div>
   {% endfor %}

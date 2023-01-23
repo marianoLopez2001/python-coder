@@ -2,26 +2,20 @@ from ecommerce.models import Productos
 from django.shortcuts import render, redirect, HttpResponse
 from ecommerce.forms import ProductosFormulario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import user_passes_test
 
 # Inicio
-
 
 def inicio(request):
     return render(request, "inicio.html")
 
-
 # Acerca de mi
-
 
 def acerca_de_mi(request):
     return render(request, "acerca-de-mi.html")
 
-
-# Producto
-
+# Productos
 
 def ver_productos(request):
     if request.method == "GET" and "search" in request.GET:
@@ -34,8 +28,6 @@ def ver_productos(request):
         context = {"productos": productos}
         return render(request, "productos.html", context=context)
 
-
-@login_required
 def eliminar_producto(request, data):
     eliminar = Productos.objects.get(id=data)
     eliminar.delete()

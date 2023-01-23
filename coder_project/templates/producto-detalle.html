@@ -18,8 +18,9 @@
         <h5 class="card-title">Precio: {{producto.price}} $</h5>
         <h5 class="card-title">Stock: {{producto.stock}}</h5>
       </div>
+      {% if request.user.is_superuser %}
       <a class="btn btn-primary text-light text-decoration-none" href="{% url 'EliminarProducto' producto.id %}">Eliminar</a>
-    </div>
+      {% endif %}    </div>
   </div>
 </section>
 {% endblock %}
