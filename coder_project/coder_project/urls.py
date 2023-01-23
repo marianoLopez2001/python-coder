@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce.views import ver_productos, eliminar_producto, inicio, acerca_de_mi, detalle_producto, login_user, register_user
+from django.contrib.auth.views import LogoutView
+from ecommerce.views import ver_productos, eliminar_producto, inicio, acerca_de_mi, detalle_producto, login_user, register_user, form_products
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,11 +24,12 @@ urlpatterns = [
     path('acerca-de-mi/', acerca_de_mi, name='AcercaDeMi'),
 
     path('productos/', ver_productos, name='VerProductos'),
+    path('crear_producto/', form_products, name='CrearProductos'),
     path('eliminar-producto/<data>', eliminar_producto, name='EliminarProducto'),
     path('detalle-producto/<data>', detalle_producto, name='DetalleProducto'),
 
     path('login/', login_user, name='Login'),
     path('register/', register_user, name='Register'),
-    
+    path('logout/', LogoutView.as_view(template_name='inicio.html'), name='Logout'),
 ]
 
