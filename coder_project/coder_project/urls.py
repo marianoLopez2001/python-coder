@@ -16,16 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from ecommerce.views import ver_productos, eliminar_producto, inicio, acerca_de_mi, detalle_producto, login_user, register_user, form_products
+from ecommerce.views import ver_posts, eliminar_producto, actualizar_producto, inicio, eliminar_comunidad, form_community, acerca_de_mi, detalle_producto, login_user, register_user, form_products
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', inicio, name='Inicio'),
     path('acerca-de-mi/', acerca_de_mi, name='AcercaDeMi'),
 
-    path('productos/', ver_productos, name='VerProductos'),
+    path('posts/', ver_posts, name='VerPosts'),
     path('crear_producto/', form_products, name='CrearProductos'),
+    path('crear_comunidad/', form_community, name='CrearComunidad'),
     path('eliminar-producto/<data>', eliminar_producto, name='EliminarProducto'),
+    path('update-producto/<data>', actualizar_producto, name='UpdateProducto'),
+    path('eliminar-comunidad/<data>', eliminar_comunidad, name='EliminarComunidad'),
     path('detalle-producto/<data>', detalle_producto, name='DetalleProducto'),
 
     path('login/', login_user, name='Login'),

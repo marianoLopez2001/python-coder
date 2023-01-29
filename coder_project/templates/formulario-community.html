@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} Formulario de comunidades {% endblock %}
+
+{% block contenido_form %}
+
+<div class="m-5">
+  <form class="d-flex justify-content-center flex-column border p-3 m-auto" style="width: fit-content;" action="" method="POST"> {% csrf_token %}
+    <h2 class="text-center m-4">Formulario de comunidades</h2>
+    <table>
+      {{formulario.as_table}}
+    </table>
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </form>
+</div>
+
+{% endblock %}

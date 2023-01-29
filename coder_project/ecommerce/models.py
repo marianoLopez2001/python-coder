@@ -13,5 +13,11 @@ class Productos (models.Model):
     price = models.IntegerField()
     date = models.DateField(default=date.today)
 
+class Community (models.Model):
+    name = models.CharField(max_length=25)
+    author = models.CharField(max_length=20)
+    description = models.CharField(max_length=100)
+    image = models.CharField(max_length=200)
+
 
 
