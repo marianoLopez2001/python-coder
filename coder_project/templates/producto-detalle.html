@@ -17,6 +17,7 @@
         <h5 class="card-title">Creado por: {{producto.author}}</h5>
         <h5 class="card-title">Precio: {{producto.price}} $</h5>
         <h5 class="card-title">Stock: {{producto.stock}}</h5>
+        <a class="text-decoration-none" href="{% url 'UpdateProducto' producto.id %}">Editar</a>
       </div>
       {% if request.user.is_superuser %}
       <a class="btn btn-primary text-light text-decoration-none" href="{% url 'EliminarProducto' producto.id %}">Eliminar</a>

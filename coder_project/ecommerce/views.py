@@ -1,9 +1,9 @@
 from ecommerce.models import Productos, Community
 from django.shortcuts import render, redirect, HttpResponse
-from ecommerce.forms import ProductosFormulario, CommunityFormulario
+from ecommerce.forms import ProductosFormulario, CommunityFormulario, UserEditForm
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.generic.edit import UpdateView
 
 class ProductoUpdate (UpdateView):
@@ -80,13 +80,11 @@ def login_user(request):
             user = authenticate(username=usuario_nombre, password=user_password)
             if user is not None:
                 login(request, user)
-                return render(
-                    request, "inicio.html", {"nombre": usuario_nombre}
-                )
-            else:
                 return render(request, "inicio.html")
+            else:
+                return render(request, "error.html")
         else:
-            return render(request, "inicio.html")
+            return render(request, "error.html")
 
     form = AuthenticationForm()
     return render(request, "login.html", {"form": form})
@@ -158,3 +156,25 @@ def eliminar_comunidad(request, data):
     eliminar = Community.objects.get(id=data)
     eliminar.delete()
     return redirect("VerPosts")
+
+@login_required
+def editar_usuario(request):
+    usuario = request.user
+    if request.method == 'POST':
+        formulario = UserEditForm(request.POST)
+        if formulario.is_valid():
+            info = formulario.cleaned_data
+            usuario.username = info['username']
+            usuario.email = info['email']
+            usuario.password1 = info['password1']
+            usuario.password2 = info['password2']
+            usuario.first_name = info['first_name']
+            usuario.last_name = info['last_name']
+            usuario.save()
+            return render(request, 'inicio.html')
+    else:
+        formulario = UserEditForm(initial={'email':usuario.email})
+    return render(request, 'editar-usuario.html', {"formulario" : formulario})
+
+def error_view (request):
+    return render(request, 'error.html')

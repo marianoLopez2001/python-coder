@@ -1,7 +1,6 @@
 # Proyecto Ecomerce
 
 ## 
-
-mariano
-passwordsuperuser
      
+marianoadmin
+administradormariano
