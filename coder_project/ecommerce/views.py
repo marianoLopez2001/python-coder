@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.generic.edit import UpdateView
+from datetime import datetime
 
 class ProductoUpdate (UpdateView):
 
@@ -44,7 +45,7 @@ def eliminar_producto(request, data):
 
 def actualizar_producto(request, data):
     productoUpdate = Productos.objects.filter(id=data)
-    print(productoUpdate)
+    
     if request.method == "POST":
         form = ProductosFormulario(request.POST)
         if form.is_valid():
@@ -54,12 +55,21 @@ def actualizar_producto(request, data):
             image = form.cleaned_data["image"]
             stock = form.cleaned_data["stock"]
             price = form.cleaned_data["price"]
-            productoUpdate.update(name=username, author=author, description= description, image=image, stock=stock, price=price)
+            date = form.cleaned_data["date"]
+            productoUpdate.update(name=username, date=date, author=author, description= description, image=image, stock=stock, price=price)
             return redirect("/posts")
         else:
             return render(request, "formulario-productos.html", {"formulario":form})
     else:
-        form = ProductosFormulario()
+        form = ProductosFormulario(initial={
+            'name':productoUpdate[0].name,
+            'author':productoUpdate[0].author,
+            'description':productoUpdate[0].description,
+            'image':productoUpdate[0].image,
+            'stock':productoUpdate[0].stock,
+            'price':productoUpdate[0].price,
+            'date': str(datetime.now().date(),)
+            })
         return render(request, "formulario-productos.html", {"formulario":form})
 
 
@@ -160,20 +170,21 @@ def eliminar_comunidad(request, data):
 @login_required
 def editar_usuario(request):
     usuario = request.user
+    print(usuario.password)
+
     if request.method == 'POST':
         formulario = UserEditForm(request.POST)
         if formulario.is_valid():
             info = formulario.cleaned_data
             usuario.username = info['username']
             usuario.email = info['email']
-            usuario.password1 = info['password1']
-            usuario.password2 = info['password2']
+            usuario.set_password(info['password1'])
             usuario.first_name = info['first_name']
             usuario.last_name = info['last_name']
             usuario.save()
             return render(request, 'inicio.html')
     else:
-        formulario = UserEditForm(initial={'email':usuario.email})
+        formulario = UserEditForm(initial={'email':usuario.email, 'first_name': usuario.first_name, 'last_name': usuario.last_name})
     return render(request, 'editar-usuario.html', {"formulario" : formulario})
 
 def error_view (request):
