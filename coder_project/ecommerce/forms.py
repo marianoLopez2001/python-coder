@@ -25,4 +25,7 @@ class UserEditForm (UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'last_name', 'first_name']
-    
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        del self.fields['password2']
+        del self.fields['password1']

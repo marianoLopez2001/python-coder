@@ -16,14 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from ecommerce.views import ver_posts, error_view, eliminar_producto, editar_usuario, actualizar_producto, inicio, eliminar_comunidad, form_community, acerca_de_mi, detalle_producto, login_user, register_user, form_products
+from ecommerce.views import ver_posts, error_view, eliminar_producto, editar_usuario, actualizar_producto, eliminar_comunidad, form_community, acerca_de_mi, detalle_producto, login_user, register_user, form_products
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', inicio, name='Inicio'),
     path('acerca-de-mi/', acerca_de_mi, name='AcercaDeMi'),
 
-    path('posts/', ver_posts, name='VerPosts'),
+    path('', ver_posts, name='VerPosts'),
     path('crear_producto/', form_products, name='CrearProductos'),
     path('crear_comunidad/', form_community, name='CrearComunidad'),
     path('eliminar-producto/<data>', eliminar_producto, name='EliminarProducto'),
@@ -35,6 +34,6 @@ urlpatterns = [
     path('error/', error_view, name='Error'),
     path('login/', login_user, name='Login'),
     path('register/', register_user, name='Register'),
-    path('logout/', LogoutView.as_view(template_name='inicio.html'), name='Logout'),
+    path('logout/', LogoutView.as_view( ), name='Logout'),
 ]
 

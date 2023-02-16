@@ -13,28 +13,36 @@ class ProductoUpdate (UpdateView):
     success_url = '/posts'
     fields = ['name', 'price']
 
-# Inicio
-
-def inicio(request):
-    return render(request, "inicio.html")
+global_username = ''
 
 # Acerca de mi
 
 def acerca_de_mi(request):
-    return render(request, "acerca-de-mi.html")
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        if not request.user.is_authenticated:
+            global global_username
+            global_username = ''
+        context = {"username": global_username, "productos": productos, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
+    context = {"username": global_username}
+    return render(request, "acerca-de-mi.html", context=context)
 
 # Productos
 
 def ver_posts(request):
     if request.method == "GET" and "search" in request.GET:
         search = request.GET["search"]
-        productos = Productos.objects.filter(name=search)
-        context = {"productos": productos}
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        context = {"productos": productos, "username": global_username, 'comunidades': comunidades}
         return render(request, "posts.html", context=context)
     elif request.method == "GET":
         productos = Productos.objects.all()
         comunidades = Community.objects.all()
-        context = {"productos": productos, 'comunidades': comunidades}
+        context = {"productos": productos, 'comunidades': comunidades, "username": global_username}
         return render(request, "posts.html", context=context)
 
 def eliminar_producto(request, data):
@@ -42,10 +50,14 @@ def eliminar_producto(request, data):
     eliminar.delete()
     return redirect("VerPosts")
 
-
 def actualizar_producto(request, data):
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        context = {"productos": productos, "username": global_username, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
     productoUpdate = Productos.objects.filter(id=data)
-    
     if request.method == "POST":
         form = ProductosFormulario(request.POST)
         if form.is_valid():
@@ -57,9 +69,9 @@ def actualizar_producto(request, data):
             price = form.cleaned_data["price"]
             date = form.cleaned_data["date"]
             productoUpdate.update(name=username, date=date, author=author, description= description, image=image, stock=stock, price=price)
-            return redirect("/posts")
+            return redirect("VerPosts")
         else:
-            return render(request, "formulario-productos.html", {"formulario":form})
+            return render(request, "formulario-productos.html", {"formulario":form, "username": global_username})
     else:
         form = ProductosFormulario(initial={
             'name':productoUpdate[0].name,
@@ -70,14 +82,20 @@ def actualizar_producto(request, data):
             'price':productoUpdate[0].price,
             'date': str(datetime.now().date(),)
             })
-        return render(request, "formulario-productos.html", {"formulario":form})
+        return render(request, "formulario-productos.html", {"formulario":form, "username": global_username})
 
 
 
 
 def detalle_producto(request, data):
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        context = {"username": global_username, "productos": productos, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
     producto = Productos.objects.get(id=data)
-    context = {"producto": producto}
+    context = {"producto": producto, "username": global_username}
     return render(request, "producto-detalle.html", context=context)
 
 
@@ -90,13 +108,20 @@ def login_user(request):
             user = authenticate(username=usuario_nombre, password=user_password)
             if user is not None:
                 login(request, user)
-                return render(request, "inicio.html")
+                global global_username
+                global_username = usuario_nombre
+                return redirect("VerPosts")
             else:
                 return render(request, "error.html")
         else:
             return render(request, "error.html")
-
     form = AuthenticationForm()
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        context = {"username": global_username, "productos": productos, "form": form, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
     return render(request, "login.html", {"form": form})
 
 
@@ -104,23 +129,33 @@ def register_user(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data["username"]
             form.save()
-            return render(
-                request, "inicio.html", {"msg": f"registrado con exito {username}"}
-            )
+            return redirect('Login')
         else:
-            return render(request, "inicio.html")
+            return render(request, "error.html")
     else:
         form = UserCreationForm()
+        if request.method == "GET" and "search" in request.GET:
+            search = request.GET["search"]
+            productos = Productos.objects.filter(name__icontains=search)
+            comunidades = Community.objects.filter(name__icontains=search)
+            context = {"username": global_username, "productos": productos, "form": form, 'comunidades': comunidades}
+            return render(request, "posts.html", context=context)
         return render(request, "register.html", {"form": form})
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def form_products(request):
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        formulario = ProductosFormulario()
+        context = {"username": global_username, "productos": productos, "formulario": formulario, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
     if request.method == "GET":
         formulario = ProductosFormulario()
-        context = {"formulario": formulario}
+        context = {"formulario": formulario, "username": global_username}
         return render(request, "formulario-productos.html", context=context)
     elif request.method == "POST":
         formulario = ProductosFormulario(request.POST)
@@ -143,9 +178,16 @@ def form_products(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def form_community(request):
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        formulario = CommunityFormulario()
+        context = {"username": global_username, "productos": productos, "formulario": formulario, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
     if request.method == "GET":
         formulario = CommunityFormulario()
-        context = {"formulario": formulario}
+        context = {"formulario": formulario, "username": global_username}
         return render(request, "formulario-community.html", context=context)
     elif request.method == "POST":
         formulario = CommunityFormulario(request.POST)
@@ -170,22 +212,28 @@ def eliminar_comunidad(request, data):
 @login_required
 def editar_usuario(request):
     usuario = request.user
-    print(usuario.password)
-
+    if request.method == "GET" and "search" in request.GET:
+        search = request.GET["search"]
+        productos = Productos.objects.filter(name__icontains=search)
+        comunidades = Community.objects.filter(name__icontains=search)
+        formulario = ProductosFormulario()
+        context = {"productos": productos, "formulario": formulario, 'comunidades': comunidades}
+        return render(request, "posts.html", context=context)
     if request.method == 'POST':
         formulario = UserEditForm(request.POST)
         if formulario.is_valid():
             info = formulario.cleaned_data
             usuario.username = info['username']
             usuario.email = info['email']
-            usuario.set_password(info['password1'])
             usuario.first_name = info['first_name']
             usuario.last_name = info['last_name']
             usuario.save()
-            return render(request, 'inicio.html')
+            global global_username
+            global_username = usuario.username = info['username']
+            return redirect('VerPosts')
     else:
-        formulario = UserEditForm(initial={'email':usuario.email, 'first_name': usuario.first_name, 'last_name': usuario.last_name})
-    return render(request, 'editar-usuario.html', {"formulario" : formulario})
+        formulario = UserEditForm(initial={'email': request.user.email, 'last_name': request.user.last_name, 'username': request.user, 'first_name': request.user.first_name})
+    return render(request, 'editar-usuario.html', {"formulario" : formulario, "username": global_username})
 
 def error_view (request):
-    return render(request, 'error.html')
+    return render(request, 'error.html', {"username": global_username})

@@ -17,7 +17,9 @@
           <h3 class="card-title">{{i.name}}</h3>
           <h4 class="card-title">{{i.price}} $</h4>
           <div class="d-flex flex-column">
+            {% if request.user.is_superuser %}
             <a class="text-decoration-none" href="{% url 'UpdateProducto' i.id %}">Editar</a>
+            {% endif %}
             <a class="text-decoration-none" href="{% url 'DetalleProducto' i.id %}">Leer mas</a>
           </div>
         </div>
